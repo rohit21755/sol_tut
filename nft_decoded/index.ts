@@ -18,7 +18,30 @@ async function main(){
         borsh.publicKey("mint"),
         borsh.str("name"),
         borsh.str("symbol"),
-        borsh.str("uri")
+        borsh.str("uri"),
+        borsh.u16("sellerFeeBasisPoints"),
+        borsh.option(
+            borsh.vec(
+                borsh.struct([
+                    borsh.publicKey('address'),
+                    borsh.bool('verified'),
+                    borsh.u8('share')
+                ]),
+                "creatorArray"
+            ),
+            "creators"
+        ),
+        borsh.bool('primarySaleHappened'),
+        borsh.bool('isMutable'),
+        borsh.option(borsh.struct([borsh.u16('editionNounceValue')]), 'editionNounce'),
+        // borsh.option(borsh.struct([borsh.u16('tokenStandardValue')]), 'tokenStandard'),
+        borsh.u16('tokenStandardValue'),
+        borsh.option(borsh.struct([
+            borsh.bool('verified'),
+            borsh.publicKey('key')
+        ]),'collection')
+
+
     ])
     if (accountInfo) {
         const metadata = borshMetaDataLayout.decode(accountInfo.data)
